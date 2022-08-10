@@ -43,16 +43,19 @@ type server struct {
 func main() {
 
 	migrate := flag.Bool("migrate", false, "should migrate - drop all tables")
+	dsn := flag.String("dsn", "postgres://postgres:postgres@localhost/hnews?sslmode=disable", "postgres connection string")
+	host := flag.String("host", "localhost", "domain name for the app")
+	port := flag.String("port", "8009", "listening port")
 
 	flag.Parse()
 
 	server := server{
-		host: "localhost",
-		port: "8009",
-		url:  "http://localhost:8009",
+		host: *host,
+		port: *port,
 	}
+	server.url = fmt.Sprintf("http://:%s:%s", *host, *port)
 
-	db2, err := openDB("postgres://postgres:postgres@localhost/hnews?sslmode=disable")
+	db2, err := openDB(*dsn)
 	if err != nil {
 		log.Fatal(err)
 	}
