@@ -1,0 +1,39 @@
+{{extends "./layout/form.html" }}
+
+{{block title()}}
+  Submit News
+{{end}}
+
+
+{{block pageContent()}}
+
+<div class="form">
+    <form method="post" action="/submit" novalidate>
+      <input type="hidden" name="csrf_token" value="{{ .CSRFToken }}">
+        {{if len(.Flash) > 0}}
+            <div class="alert alert-danger">{{.Flash}}</div>
+        {{end}}
+        
+        {{if isset(errors) }}
+        <div class="alert">
+            <h2>Error!</h2>
+            <ul>
+                {{range err := errors}}
+                <li> {{errors.First(err)}}</li>
+                {{end}}
+            </ul>
+        </div>
+        {{end}}
+      <h1>Submit News!</h1>
+      <p>Share your best news with the world using our HackerNews Clone</p>
+      <div class="form__fields">
+        <input type="text" value="{{form.Get("title")}}" name="title" placeholder="Title" />
+        <input type="url" value="{{form.Get("url")}}" name="url" placeholder="URL" />
+      </div>
+      <div class="form__buttons">
+        <button type="button" onclick="document.location = '{{.URL}}'">Cancel</button>
+        <button>Submit News</button>
+      </div>
+    </form>
+  </div>
+  {{end}}

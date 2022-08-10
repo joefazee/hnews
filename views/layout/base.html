@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  {{ include "../partials/header.html" }}
+  <body>
+    <header class="header">
+      <div>
+        <div class="container header__top">
+          <a href="/" class="header__logo">
+            <img src="/public/assests/logo.svg" alt="" />
+            <h1>Hacker News Clone</h1>
+          </a>
+          <form class="header__search" method="get" id="search-form" action="/" name="search-form">
+            <input type="text" name="q" placeholder="Search news"  />
+            <div><img src="/public/assests/search-icon.svg" alt="" /></div>
+          </form>
+          <div class="header__auth">
+            {{if .IsAuthenticated}}
+            <a href="/submit" class="submit">Submit</a>
+            <div>
+              <img src="/public/assests/user-white.svg" alt="" />
+              <a href="/logout">{{.AuthUser}} (Logout)</a>
+            </div>
+            {{else}}
+            <a href="/login">Login / Signup</a>
+            {{end}}
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="container header__bottom">
+          <ul>
+            <li><a href="/" class="active">News</a></li>
+          </ul>
+          {{if isset(form)}}
+          <div class="header__sort">
+            <span>Sort by: </span>
+            <form action="/" method="get" name="sorting" id="sorting">
+              <select name="order_by" onchange="forms['sorting'].submit()">
+                <option value="latest" {{form.Get("order_by") == "latest" ? "selected": ""}}>Latest</option>
+                <option value="popular" {{form.Get("order_by") == "popular" ? "selected": ""}}>Popular</option>
+              </select>
+              {{ pageSizes := slice(5, 10, 20, 50, 100)}}
+              <select name="page_size" id="" onchange="forms['sorting'].submit()">
+                {{range pageSizes}}
+                <option value="{{.}}"  {{ form.GetInt("page_size") == . ? "selected" : ""}}>{{.}}</option>
+                {{end}}
+              </select>
+            </form>
+          </div>
+          {{end}}
+        </div>
+      </div>
+    </header>
+    <main class="main container">
+      {{yield pageContent()}}
+    </main>
+    <footer class="footer">
+      <ul class="container">
+        <li>Built with &#10084;&#65039; using <a href="https://go.dev/">Go</a>! Abah Joseph</li>
+      </ul>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,63 @@
+{{extends "./layout/base.html" }}
+
+{{block title()}}
+  {{post.Title}}::Comments
+{{end}}
+
+
+{{block pageContent()}}
+    <div class="py-20">
+      <div class="news__container">
+        <div class="news bb-0">
+          <div class="news__left">
+            <img src="/public/assests/arrow-up.svg" alt="">
+            <span>{{post.CommentCount}}</span>
+          </div>
+          <div class="news__right">
+            <p>
+              <a href="{{post.Url}}" target="_blank">{{post.Title}}</a>
+            </p>
+            <div class="news__info">
+              <div>
+                <img src="/public/assests/message.svg" alt="">
+                <a href="/comments/{{post.ID}}"> {{post.CommentCount}} Comment{{post.CommentCount > 1 ? "s": ""}}</a>
+              </div>
+              <div>
+                <img src="/public/assests/user.svg" alt="">
+                <span> {{post.UserName}}</span>
+              </div>
+              <div>
+                <img src="/public/assests/clock.svg" alt="">
+                <span> {{post.DateHuman()}}</span>
+              </div>
+              <div>
+                <img src="/public/assests/link.svg" alt="">
+                <span> <a href="{{post.Url}}" target="_blank">{{post.Host()}}</a></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <form class="news__comment" method="post" action="/comments/{{post.ID}}">
+          <input type="hidden" name="csrf_token" value="{{ .CSRFToken }}">
+            {{if len(.Flash) > 0}}
+            <div>{{.Flash}}</div>
+            {{end}}
+          <textarea name="comment"></textarea>
+          {{if .IsAuthenticated}} <button type="submit" value="Add comment">Add comment</button> {{end}}
+        </form>
+      </div>
+    </div>
+    <div class="comments container">
+        {{range comments}}
+      <div class="comment">
+        <div class="comment__top">
+          <span>{{.User.Name}}</span><time>{{.DateHuman()}}</time>
+        </div>
+        <div class="comment__bottom">
+          {{.Body}}
+        </div>
+      </div>
+      {{end}}
+     
+    </div>
+{{end}}

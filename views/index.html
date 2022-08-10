@@ -1,0 +1,33 @@
+{{extends "./layout/base.html" }}
+
+{{block title()}}
+  HackerNews Clone by Abah Joseph
+{{end}}
+
+{{block pageContent()}}
+
+<div class="main__news">
+    <h2>Latest News of Today</h2>
+    <div class="news__container">
+      {{if len(.Flash) > 0}}
+      <div>{{.Flash}}</div>
+      {{end}}
+      {{range  posts}}
+        {{include "./partials/post.html" }}
+      {{end}}
+    </div>
+  </div>
+
+
+  {{if meta.TotalRecords > meta.PageSize}}
+  <div class="main__button paginate">
+    {{if meta.PrevPage != 0}}
+    <a href="?{{prevUrl}}">Prev</a>
+    {{end}}
+
+    {{if meta.NextPage <= meta.LastPage}}
+    <a href="?{{nextUrl}}">Next</a>
+    {{end}}
+  </div>
+  {{end}}
+{{end}}

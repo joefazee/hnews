@@ -1,0 +1,40 @@
+{{extends "./layout/form.html" }}
+
+{{block title()}}
+  Login
+{{end}}
+
+
+{{block pageContent()}}
+
+<div class="form">
+    <form method="post" action="/login" novalidate>
+
+        {{if len(.Flash) > 0}}
+            <div class="alert alert-danger">{{.Flash}}</div>
+        {{end}}
+        
+        {{if isset(errors) }}
+        <div class="alert">
+            <h2>Error!</h2>
+            <ul>
+                {{range err := errors}}
+                <li> {{errors.First(err)}}</li>
+                {{end}}
+            </ul>
+        </div>
+        {{end}}
+      <h1>Login!</h1>
+      <p>Use the form below to log-in! Click here to <a href="/signup"><strong>sign up</strong></a></p>
+      <div class="form__fields">
+        <input type="email" name="email" placeholder="Email address" />
+        <input type="password" name="password" placeholder="Password" />
+        <input type="hidden" name="csrf_token" value="{{ .CSRFToken }}">
+      </div>
+      <div class="form__buttons">
+        <button type="button" onclick="document.location = '{{.URL}}'">Cancel</button>
+        <button>Login</button>
+      </div>
+    </form>
+  </div>
+  {{end}}
