@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/joefazee/hnews/public"
 	"net/http"
 )
 
@@ -34,7 +35,7 @@ func (a *application) routes() http.Handler {
 	mux.Get("/submit", a.authRequired(a.submitHandler))
 	mux.Post("/submit", a.authRequired(a.submitPostHandler))
 
-	fileServer := http.FileServer(http.Dir("./public"))
+	fileServer := http.FileServer(http.FS(public.Files))
 	mux.Handle("/public/*", http.StripPrefix("/public", fileServer))
 
 	return mux

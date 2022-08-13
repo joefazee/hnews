@@ -5,9 +5,11 @@ import (
 	"flag"
 	"fmt"
 	"github.com/CloudyKit/jet/v6"
+	"github.com/CloudyKit/jet/v6/loaders/httpfs"
 	"github.com/alexedwards/scs/postgresstore"
 	"github.com/alexedwards/scs/v2"
 	"github.com/joefazee/hnews/models"
+	"github.com/joefazee/hnews/views"
 	"github.com/upper/db/v4"
 	"github.com/upper/db/v4/adapter/postgresql"
 	"log"
@@ -94,10 +96,11 @@ func main() {
 	}
 
 	// init jet template
+	httpfsLoader, err := httpfs.NewLoader(http.FS(views.StaticFiles))
 	if app.debug {
-		app.view = jet.NewSet(jet.NewOSFileSystemLoader("./views"), jet.InDevelopmentMode())
+		app.view = jet.NewSet(httpfsLoader, jet.InDevelopmentMode())
 	} else {
-		app.view = jet.NewSet(jet.NewOSFileSystemLoader("./views"))
+		app.view = jet.NewSet(httpfsLoader)
 	}
 
 	// init session
