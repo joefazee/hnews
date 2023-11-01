@@ -1,0 +1,7 @@
+{
+  email dev@dev.abahjoseph.tech
+}
+
+dev.abahjoseph.tech {
+    reverse_proxy localhost:8000
+}

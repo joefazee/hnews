@@ -45,7 +45,7 @@ type server struct {
 func main() {
 
 	migrate := flag.Bool("migrate", false, "should migrate - drop all tables")
-	dsn := flag.String("dsn", "postgres://postgres:postgres@localhost/hnews?sslmode=disable", "postgres connection string")
+	dsn := flag.String("dsn", "postgres://root:secret@localhost:5455/hnews?sslmode=disable", "postgres connection string")
 	host := flag.String("host", "localhost", "domain name for the app")
 	port := flag.String("port", "8009", "listening port")
 
@@ -108,7 +108,6 @@ func main() {
 	app.session.Lifetime = 24 * time.Hour
 	app.session.Cookie.Persist = true
 	app.session.Cookie.Name = app.appName
-	app.session.Cookie.Domain = app.server.host
 	app.session.Cookie.SameSite = http.SameSiteStrictMode
 	app.session.Store = postgresstore.New(db2)
 

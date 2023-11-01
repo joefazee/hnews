@@ -8,7 +8,7 @@
 {{block pageContent()}}
 
 <div class="form">
-    <form method="post" action="/login" novalidate>
+    <form method="post" action="/login" autocomplete="off" novalidate>
 
         {{if len(.Flash) > 0}}
             <div class="alert alert-danger">{{.Flash}}</div>
